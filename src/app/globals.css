@@ -1,0 +1,1336 @@
+/* Global Styles for Bliston Base Website */
+
+/* CSS Variables */
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #1e40af;
+  --accent-color: #3b82f6;
+  --dark-bg: rgba(20, 20, 30, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --text-light: #ffffff;
+  --text-dark: #1f2937;
+  --review-card-bg: #2E2F90;
+  --star-color: #fbbf24;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #000;
+  color: white;
+  overflow: hidden;
+  width: 1080px;
+  height: 1920px;
+  max-width: 1080px;
+  max-height: 1920px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+#__next {
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+}
+
+/* Force vertical orientation for tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+  html {
+    transform-origin: top left;
+  }
+}
+
+/* Glassmorphism Effect */
+.glass-effect {
+  background: var(--dark-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   HEADER - Smart Info Strip Design
+   ======================================== */
+.header-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: rgba(138, 139, 141, 0.5);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* LEFT ZONE - Year + Date Cluster */
+.left-zone {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.year-vertical {
+  /* Stack digits vertically with upright orientation */
+  text-orientation: upright;
+  rotate: -90deg;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 1px;
+  opacity: 0.95;
+  margin-right: -10px;
+  line-height: 1;
+  margin-left: -15px;
+}
+
+.year-vertical span {
+  display: block;
+  line-height: 1;
+}
+
+.date-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: -20px;
+}
+
+.date-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.date-month {
+  font-size: 46px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.date-weekday {
+  font-size: 28px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.date-day-large {
+  font-size: 92px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 0.9;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.date-ordinal {
+  position: absolute;
+  top: 4px;
+  right: -12px;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* CENTER ZONE - Time + Micro Indicators */
+.center-zone {
+  flex: 0 0 auto;
+}
+
+.time-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* no background on the time container; the inner badge (.time-display) has the outline */
+  background: transparent;
+  padding: 0;
+  border-radius: 8px;
+  border: none;
+  backdrop-filter: none;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* no background fill; keep a thin border to match design */
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  min-width: 120px;
+  justify-content: center;
+}
+
+.time-main {
+  font-size: 44px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.micro-indicators {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Micro indicators placed inside the time box next to the time */
+
+.micro-inside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  min-width: 40px;
+  margin-left: 8px;
+}
+
+.micro-inside .micro-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.micro-inside .micro-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.micro-item.small {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.micro-item.small .micro-icon {
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.micro-item.small .micro-value {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.time-box {
+  padding: 0px 0px;
+  border-radius: 16px;
+}
+
+.time-display .time-main {
+  font-size: 44px;
+  font-weight: 800;
+}
+
+.micro-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.micro-item .micro-icon {
+  display: block;
+  font-size: 14px;
+}
+
+.micro-item .micro-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.micro-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.micro-icon {
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.up-arrow {
+  color: #ff6b00;
+}
+
+.down-arrow {
+  color: #2fb8ff;
+}
+
+.drop-icon {
+  color: #2fb8ff;
+}
+
+.micro-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Ensure numeric values have no background/pill so they sit flush like the design */
+.micro-value,
+.aux-value,
+.date-day-large,
+.time-main {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* RIGHT ZONE - Location + Current Temperature */
+.right-zone {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 1;
+}
+
+.right-micro {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  padding-right: 6px;
+}
+
+.location-stack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.temp-aux {
+  display: block;
+}
+
+.temp-aux-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aux-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 6px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.aux-value {
+  font-weight: 800;
+}
+
+.aux-low-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.aux-low {
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.aux-high {
+  font-size: 30px;
+  margin-right: 25px;
+  gap:14px;
+}
+
+/* Stack for high temperature with humidity beneath it */
+.aux-high-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.aux-humidity {
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.aux-humidity .micro-icon {
+  opacity: 0.9;
+}
+
+.location-stack .location-name {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-top:0px;
+
+}
+
+.location-stack .current-temp {
+  font-size: 80px;
+  font-weight: 900;
+  line-height: 1;
+  margin-left: 6px;
+}
+
+.time-box {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.micro-inside {
+  opacity: 0.95;
+}
+
+.location-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+ 
+  margin-left: 16px;
+  margin-right: -20px;
+}
+
+.current-temp {
+  font-size: 36px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* Video Section Styles */
+.video-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.video-overlay.playing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.play-button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 255, 255, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+}
+
+.play-button::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.play-button:hover {
+  transform: scale(1.15);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.play-button:hover::after {
+  opacity: 1;
+}
+
+.play-button::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 32px solid white;
+  border-top: 21px solid transparent;
+  border-bottom: 21px solid transparent;
+  margin-left: 8px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* User Card Styles (Name + Stars) */
+.user-card {
+  background: linear-gradient(135deg, #4267B2, #2d4373);
+  border-radius: 18px;
+  padding: 18px 22px;
+  color: white;
+  box-shadow: 0 10px 40px rgba(59, 89, 152, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.user-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 60%);
+  pointer-events: none;
+}
+
+.user-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(59, 89, 152, 0.5), 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  color: #fbbf24;
+  font-size: 17px;
+  filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.5));
+  animation: starTwinkle 2s ease-in-out infinite;
+  animation-delay: calc(var(--star-index, 0) * 0.1s);
+}
+
+.star:nth-child(1) {
+  --star-index: 0;
+}
+
+.star:nth-child(2) {
+  --star-index: 1;
+}
+
+.star:nth-child(3) {
+  --star-index: 2;
+}
+
+.star:nth-child(4) {
+  --star-index: 3;
+}
+
+.star:nth-child(5) {
+  --star-index: 4;
+}
+
+.star.empty {
+  color: rgba(255, 255, 255, 0.25);
+  filter: none;
+  animation: none;
+}
+
+/* Review Card Styles (Text Only) */
+.review-card {
+  background: #2E2F90;
+  border-radius: 18px;
+  padding: 12px 24px;
+  color: white;
+  box-shadow: 0 10px 40px rgba(59, 89, 152, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  animation: slideInRight 0.6s ease-out;
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 60%);
+  pointer-events: none;
+}
+
+.review-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 50px rgba(59, 89, 152, 0.5), 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.review-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #f0f0f0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   FOOTER - Testimonial Bar Design
+   ======================================== */
+.footer-testimonial-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  right: 0px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 16px;
+  padding: 1px 10px;
+  margin-right: 0;
+  /* Ensure no extra margin */
+}
+
+/* Reviewer Profile Section */
+.reviewer-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.profile-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #272964;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-initial {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewer-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.star.filled {
+  color: #fbbf24;
+}
+
+.star.empty {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Testimonial Text Section */
+.testimonial-text {
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  padding-left: 100%;
+  /* Initial state: pushed to the right */
+  transform: translateX(0);
+}
+
+.marquee-text.animate {
+  animation: marquee var(--duration, 20s) linear forwards;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.footer-section {
+  background: transparent;
+  padding: 0;
+}
+
+.footer-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.reviews-carousel {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Review strip: left pill (avatar + name + stars) and right rounded message */
+.reviews-strip-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+  /* kept for legacy; prefer `.footer-testimonial-bar` now */
+  padding: 6px;
+  border-radius: 18px;
+  width: 100%;
+}
+
+/* Outer wrapper without its own color — use per-card colors instead */
+/* Removed duplicate .footer-testimonial-bar - using the main one above */
+.review-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* tightened gap between left and right cards */
+  width: min(900px, 94%);
+}
+
+/* Left card: name + stars */
+.reviewer-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2E2F90;
+  /* reviewer profile color */
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 12px;
+  min-width: 160px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  height: 72px;
+  /* fixed height so both cards match */
+}
+
+.reviewer-profile .avatar-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #11183a;
+  flex-shrink: 0;
+}
+
+.review-card-left {
+  /* kept for compatibility, map to same visual as reviewer-profile */
+  display: none;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  justify-content: center
+}
+
+.pill-name {
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+}
+
+.pill-stars {
+  color: #fbbf24;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Right card: testimonial */
+.testimonial-text {
+  background: #2E2F90;
+  /* testimonial color */
+  border-radius: 12px;
+  padding: 10px 16px;
+  flex: 1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  height: 72px;
+  /* same fixed height as reviewer-profile */
+  display: flex;
+  align-items: center;
+  /* center the testimonial vertically */
+  padding-right: 24px;
+  /* extra gap on the right as requested */
+}
+
+.review-card-right {
+  /* kept for compatibility, map to none */
+  display: none;
+}
+
+.testimonial {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-message {
+  background: #3247b2;
+  color: #fff;
+  padding: 10px 16px;
+  /* tighter padding so text sits closer */
+  border-radius: 16px;
+  flex: 1;
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 576px) {
+  .review-strip {
+    gap: 8px;
+  }
+
+  .review-pill {
+    min-width: 140px;
+    padding: 6px 10px;
+  }
+
+  .pill-name {
+    font-size: 12px;
+  }
+
+  .pill-stars {
+    font-size: 11px;
+  }
+
+  .review-message {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
+
+/* Carousel Custom Styles */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  margin: 0 5px;
+}
+
+.carousel-indicators button.active {
+  background: #ffffff;
+}
+
+/* Responsive Styles - Optimized for Vertical/Portrait Displays */
+
+/* Small vertical screens (phones in portrait) */
+@media (max-width: 576px) {
+  .header-container {
+    padding: 10px 15px;
+  }
+
+  .year-vertical {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+
+  .date-horizontal {
+    font-size: 9px;
+  }
+
+  .header-time {
+    font-size: 28px;
+    letter-spacing: 1.5px;
+  }
+
+  .weather-icon {
+    font-size: 20px;
+  }
+
+  .weather-temp {
+    font-size: 20px;
+  }
+
+  .weather-humidity {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+
+  .weather-location {
+    font-size: 9px;
+  }
+
+  .play-button {
+    width: 90px;
+    height: 90px;
+  }
+
+  .play-button::before {
+    border-left: 25px solid white;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    margin-left: 6px;
+  }
+
+  .footer-overlay {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+
+  .user-card {
+    padding: 12px 14px;
+  }
+
+  .user-name {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .review-card {
+    padding: 12px 14px;
+  }
+
+  .review-text {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .star {
+    font-size: 14px;
+  }
+}
+
+/* Tablet Portrait Optimization (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait) {
+  .header-container {
+    padding: 16px 24px;
+  }
+
+  .year-vertical {
+    font-size: 12px;
+  }
+
+  .date-horizontal {
+    font-size: 12px;
+  }
+
+  .header-time {
+    font-size: 42px;
+  }
+
+  .weather-icon {
+    font-size: 28px;
+  }
+
+  .weather-temp {
+    font-size: 28px;
+  }
+
+  .weather-humidity {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .weather-location {
+    font-size: 12px;
+  }
+
+  .play-button {
+    width: 140px;
+    height: 140px;
+  }
+
+  .play-button::before {
+    border-left: 36px solid white;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+  }
+
+  .footer-overlay {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    gap: 16px;
+  }
+
+  .user-card {
+    padding: 20px 24px;
+  }
+
+  .user-name {
+    font-size: 18px;
+  }
+
+  .review-card {
+    padding: 20px 26px;
+  }
+
+  .review-text {
+    font-size: 15px;
+  }
+
+  .star {
+    font-size: 18px;
+  }
+}
+
+/* Medium vertical screens (tablets in portrait, large phones) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .header-container {
+    padding: 14px 20px;
+  }
+
+  .year-vertical {
+    font-size: 11px;
+  }
+
+  .date-horizontal {
+    font-size: 11px;
+  }
+
+  .header-time {
+    font-size: 34px;
+  }
+
+  .weather-temp {
+    font-size: 24px;
+  }
+
+  .weather-humidity {
+    font-size: 11px;
+  }
+
+  .weather-location {
+    font-size: 11px;
+  }
+
+  .play-button {
+    width: 110px;
+    height: 110px;
+  }
+
+  .play-button::before {
+    border-left: 30px solid white;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+  }
+
+  .footer-overlay {
+    bottom: 18px;
+    left: 18px;
+    right: 18px;
+    gap: 12px;
+  }
+
+  .user-card {
+    padding: 16px 20px;
+  }
+
+  .review-card {
+    padding: 16px 22px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .header-container {
+    padding: 8px 15px;
+  }
+
+  .header-time {
+    font-size: 24px;
+  }
+
+  .year-vertical {
+    font-size: 8px;
+  }
+
+  .date-horizontal {
+    font-size: 8px;
+  }
+
+  .weather-temp {
+    font-size: 18px;
+  }
+
+  .play-button {
+    width: 70px;
+    height: 70px;
+  }
+
+  .play-button::before {
+    border-left: 20px solid white;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+  }
+
+  .footer-overlay {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .user-card,
+  .review-card {
+    padding: 10px 14px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
+
+  .review-text {
+    font-size: 12px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes starTwinkle {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Smooth Transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Loading State */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
