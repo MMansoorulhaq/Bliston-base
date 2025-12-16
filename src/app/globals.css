@@ -38,6 +38,40 @@ body {
   padding: 0;
 }
 
+body.admin-mode {
+  width: 100%;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+}
+
+body.admin-mode #__next {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+}
+
+.admin-portrait {
+  width: 1080px;
+  height: 1920px;
+  margin: 0 auto;
+  overflow: auto;
+  position: relative;
+  background: #000;
+}
+
+.admin-landscape {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 16px;
+  position: relative;
+  background: #000;
+}
+
 #__next {
   width: 1080px;
   height: 1920px;

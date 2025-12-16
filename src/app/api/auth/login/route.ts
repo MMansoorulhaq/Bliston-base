@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateCredentials, generateSessionToken } from '@/lib/auth';
+import { validateUser } from '@/lib/users';
+import { logActivity } from '@/lib/activityLog';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,28 +13,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (validateCredentials(username, password)) {
-      const token = generateSessionToken();
-      const response = NextResponse.json({ success: true });
-      
-      // Set session cookie
-      response.cookies.set('admin_session', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24, // 24 hours
-      });
+    const user = validateUser(username, password);
 
-      return response;
-    } else {
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       );
     }
+
+    // Log successful login
+    await logActivity(user.id, user.username, 'LOGIN', 'User logged in successfully');
+
+    // Create session
+    const response = NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      },
+    });
+
+    // Set session cookie
+    response.cookies.set('admin_session', JSON.stringify({
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+    }), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return response;
   } catch (error) {
+    console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'An error occurred during login' },
       { status: 500 }
     );
   }

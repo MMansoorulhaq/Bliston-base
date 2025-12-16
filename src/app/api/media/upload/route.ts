@@ -3,6 +3,7 @@ import { writeFile, mkdir, readdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
+import { logActivity } from '@/lib/activityLog';
 
 const MAX_ITEMS = 4;
 
@@ -13,6 +14,8 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const sessionData = JSON.parse(session.value);
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -149,6 +152,14 @@ export async function POST(request: NextRequest) {
         originalName: file.name
       }));
     }
+
+    // Log the upload
+    await logActivity(
+      sessionData.userId,
+      sessionData.username,
+      'UPLOAD_MEDIA',
+      `Uploaded ${type}: ${filename}`
+    );
 
     return NextResponse.json({
       success: true,

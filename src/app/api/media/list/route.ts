@@ -10,7 +10,7 @@ export async function GET() {
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
 
     if (!existsSync(uploadsDir)) {
-      return NextResponse.json({ media: [], timestamp: Date.now() });
+      return NextResponse.json({ media: [], timestamp: 0 });
     }
 
     // Get all media files
@@ -64,6 +64,29 @@ export async function GET() {
       }
     }
 
+    // Calculate timestamp based on most recent file modification or order file
+    let contentTimestamp = 0;
+    
+    // Check order file modification time
+    if (existsSync(orderFilePath)) {
+      try {
+        const orderStats = await stat(orderFilePath);
+        contentTimestamp = Math.max(contentTimestamp, orderStats.mtimeMs);
+      } catch (e) {
+        // Ignore
+      }
+    }
+    
+    // Check all media file modification times
+    media.forEach(item => {
+      contentTimestamp = Math.max(contentTimestamp, item.uploadedAt.getTime());
+    });
+    
+    // If no files, use current time
+    if (contentTimestamp === 0) {
+      contentTimestamp = Date.now();
+    }
+
     // Apply custom order if available
     if (customOrder.length > 0) {
       const orderedMedia: typeof media = [];
@@ -83,7 +106,7 @@ export async function GET() {
       const finalMedia = orderedMedia.filter(Boolean).concat(unorderedMedia);
       return NextResponse.json({ 
         media: finalMedia,
-        timestamp: Date.now()
+        timestamp: contentTimestamp
       });
     }
 
@@ -92,12 +115,12 @@ export async function GET() {
 
     return NextResponse.json({ 
       media,
-      timestamp: Date.now()
+      timestamp: contentTimestamp
     });
   } catch (error) {
     console.error('List error:', error);
     return NextResponse.json(
-      { media: [], timestamp: Date.now() },
+      { media: [], timestamp: 0 },
       { status: 200 }
     );
   }

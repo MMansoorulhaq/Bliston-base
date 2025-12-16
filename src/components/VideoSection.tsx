@@ -25,49 +25,54 @@ export default function VideoSection() {
   const textRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const playlistRef = useRef<MediaItem[]>([]);
 
   // Fetch media from uploads directory
   const loadMedia = async () => {
     try {
+      console.log('🔄 Fetching media from /api/media/list...');
       const response = await fetch('/api/media/list');
+      console.log('📡 API Response status:', response.status, response.statusText);
+      
       if (response.ok) {
         const data = await response.json();
-        console.log('Loaded media from API:', data);
+        console.log('✅ Loaded media from API:', data);
+        
         if (data.media && data.media.length > 0) {
-          console.log('Setting media playlist with', data.media.length, 'items:', data.media);
-          playlistRef.current = data.media;
+          console.log('✅ Setting media playlist with', data.media.length, 'items');
+          console.log('📋 Media items:', data.media.map((m: MediaItem) => `${m.type}:${m.filename}`).join(', '));
+          
           setMediaPlaylist(data.media);
           setLastTimestamp(data.timestamp);
+          console.log('✅ State updated successfully');
         } else {
-          console.log('No media found, using default video');
+          console.warn('⚠️ No media found in API response, using default video');
           // Fallback to default video
           const defaultMedia = [{
             filename: 'homepage.mp4',
             type: 'video' as const,
             url: '/videos/homepage.mp4'
           }];
-          playlistRef.current = defaultMedia;
           setMediaPlaylist(defaultMedia);
         }
       } else {
-        console.error('Failed to fetch media, status:', response.status);
+        console.error('❌ Failed to fetch media, status:', response.status);
+        const errorText = await response.text();
+        console.error('❌ Error response:', errorText);
+        
         const defaultMedia = [{
           filename: 'homepage.mp4',
           type: 'video' as const,
           url: '/videos/homepage.mp4'
         }];
-        playlistRef.current = defaultMedia;
         setMediaPlaylist(defaultMedia);
       }
     } catch (error) {
-      console.error('Failed to load media:', error);
+      console.error('❌ Failed to load media (exception):', error);
       const defaultMedia = [{
         filename: 'homepage.mp4',
         type: 'video' as const,
         url: '/videos/homepage.mp4'
       }];
-      playlistRef.current = defaultMedia;
       setMediaPlaylist(defaultMedia);
     }
   };
@@ -79,25 +84,43 @@ export default function VideoSection() {
 
   // Auto-refresh: Poll for updates every 10 seconds
   useEffect(() => {
+    console.log('🔄 Auto-refresh polling started (checking every 10 seconds)');
+    
     const interval = setInterval(async () => {
       try {
-        const response = await fetch('/api/media/list');
+        console.log('🔍 Checking for content updates...');
+        const response = await fetch('/api/media/list', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+          }
+        });
+        
         if (response.ok) {
           const data = await response.json();
+          console.log('📊 Current timestamp:', lastTimestamp, 'New timestamp:', data.timestamp);
+          
           // Check if timestamp changed (content updated)
-          if (data.timestamp !== lastTimestamp && data.media) {
-            playlistRef.current = data.media;
+          if (lastTimestamp !== 0 && data.timestamp !== lastTimestamp && data.media) {
+            console.log('🔄 Content updated detected! Reloading playlist...');
+            console.log('📋 New media count:', data.media.length);
             setMediaPlaylist(data.media);
             setLastTimestamp(data.timestamp);
             setCurrentMediaIndex(0); // Reset to first item
+            console.log('✅ Playlist reloaded successfully');
+          } else {
+            console.log('✓ No changes detected');
           }
         }
       } catch (error) {
-        console.error('Failed to check for updates:', error);
+        console.error('❌ Failed to check for updates:', error);
       }
     }, 10000); // Check every 10 seconds
 
-    return () => clearInterval(interval);
+    return () => {
+      console.log('🛑 Auto-refresh polling stopped');
+      clearInterval(interval);
+    };
   }, [lastTimestamp]);
 
   // Fetch Google reviews
@@ -146,12 +169,11 @@ export default function VideoSection() {
 
   // Handle video end
   const handleVideoEnd = () => {
-    console.log('Video ended, moving to next media');
-    const playlist = playlistRef.current;
-    if (playlist.length > 0) {
+    console.log('🏁 Video ended, moving to next media');
+    if (mediaPlaylist.length > 0) {
       setCurrentMediaIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % playlist.length;
-        console.log('Next index will be:', nextIndex, 'out of', playlist.length);
+        const nextIndex = (prevIndex + 1) % mediaPlaylist.length;
+        console.log('➡️ Next index will be:', nextIndex, 'out of', mediaPlaylist.length);
         return nextIndex;
       });
     }
@@ -159,21 +181,24 @@ export default function VideoSection() {
 
   // Auto-play media when index changes
   useEffect(() => {
-    const playlist = playlistRef.current;
-    
-    if (playlist.length === 0) {
-      console.warn('Media playlist is empty');
+    // Use state playlist instead of ref to avoid race condition
+    if (mediaPlaylist.length === 0) {
+      console.log('⏳ Media playlist is empty, waiting for data to load...');
       return;
     }
 
-    const currentMedia = playlist[currentMediaIndex];
+    const currentMedia = mediaPlaylist[currentMediaIndex];
     if (!currentMedia) {
-      console.warn('No current media at index', currentMediaIndex, 'Playlist length:', playlist.length);
+      console.error('❌ No current media at index', currentMediaIndex, 'Playlist length:', mediaPlaylist.length);
       return;
     }
 
-    console.log(`[${currentMediaIndex + 1}/${playlist.length}] Playing media:`, currentMedia.type, currentMedia.filename, 'Duration:', currentMedia.duration);
-    console.log('Full playlist:', playlist.map(m => `${m.type}:${m.filename}`).join(', '));
+    console.log(`▶️ [${currentMediaIndex + 1}/${mediaPlaylist.length}] Playing media:`, currentMedia.type, currentMedia.filename, 'Duration:', currentMedia.duration);
+    console.log('📋 Full playlist:', mediaPlaylist.map(m => `${m.type}:${m.filename}`).join(', '));
+    
+    if (mediaPlaylist.length === 1 && currentMedia.type === 'video') {
+      console.log('🔁 Single video mode: Auto-loop enabled');
+    }
 
     // Clear any existing image timer
     if (imageTimerRef.current) {
@@ -184,31 +209,41 @@ export default function VideoSection() {
 
     if (currentMedia.type === 'video') {
       if (videoRef.current) {
-        console.log('Loading and playing video:', currentMedia.url);
+        console.log('🎬 Loading video:', currentMedia.url);
+        // Force reload the video
+        videoRef.current.src = currentMedia.url;
         videoRef.current.load();
+        
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              console.log('Video playing successfully');
+              console.log('✅ Video playing successfully');
             })
             .catch(err => {
-              console.error('Autoplay prevented or failed:', err);
+              console.error('❌ Autoplay prevented or failed:', err);
+              // Try to play on next user interaction
+              const playOnClick = () => {
+                console.log('🖱️ User clicked, attempting to play video');
+                videoRef.current?.play();
+                document.removeEventListener('click', playOnClick);
+              };
+              document.addEventListener('click', playOnClick);
             });
         }
       } else {
-        console.error('Video ref is null!');
+        console.error('❌ Video ref is null!');
       }
     } else if (currentMedia.type === 'image') {
       // Set timer for image duration
       const imageDuration = (currentMedia.duration || 10) * 1000; // Convert to milliseconds
-      console.log('Setting image timer for', imageDuration, 'ms (', currentMedia.duration, 'seconds)');
+      console.log('🖼️ Setting image timer for', imageDuration, 'ms (', currentMedia.duration, 'seconds)');
       
       imageTimerRef.current = setTimeout(() => {
-        console.log('Image timer expired, moving to next media');
+        console.log('⏰ Image timer expired, moving to next media');
         setCurrentMediaIndex((prevIndex) => {
-          const nextIndex = (prevIndex + 1) % playlist.length;
-          console.log('Next index will be:', nextIndex, 'out of', playlist.length);
+          const nextIndex = (prevIndex + 1) % mediaPlaylist.length;
+          console.log('➡️ Next index will be:', nextIndex, 'out of', mediaPlaylist.length);
           return nextIndex;
         });
       }, imageDuration);
@@ -216,12 +251,12 @@ export default function VideoSection() {
 
     return () => {
       if (imageTimerRef.current) {
-        console.log('Cleanup: Clearing image timer');
+        console.log('🧹 Cleanup: Clearing image timer');
         clearTimeout(imageTimerRef.current);
         imageTimerRef.current = null;
       }
     };
-  }, [currentMediaIndex]);
+  }, [currentMediaIndex, mediaPlaylist]);
 
   if (mediaPlaylist.length === 0) {
     return (
@@ -244,6 +279,7 @@ export default function VideoSection() {
   }
 
   const currentMedia = mediaPlaylist[currentMediaIndex];
+  const isSingleVideo = mediaPlaylist.length === 1 && currentMedia?.type === 'video';
 
   return (
     <section className="video-section">
@@ -255,11 +291,29 @@ export default function VideoSection() {
             onPause={handlePause}
             onPlay={handlePlay}
             onEnded={handleVideoEnd}
+            onError={(e) => {
+              console.error('❌ Video error:', e);
+              console.error('❌ Video src:', currentMedia.url);
+              console.error('❌ Video readyState:', videoRef.current?.readyState);
+              console.error('❌ Video networkState:', videoRef.current?.networkState);
+              const videoElement = e.currentTarget as HTMLVideoElement;
+              if (videoElement.error) {
+                console.error('❌ Video error code:', videoElement.error.code);
+                console.error('❌ Video error message:', videoElement.error.message);
+              }
+            }}
+            onLoadedData={() => {
+              console.log('✅ Video loaded successfully, readyState:', videoRef.current?.readyState);
+            }}
+            onCanPlay={() => {
+              console.log('✅ Video can play');
+            }}
             autoPlay
             muted
             playsInline
+            loop={isSingleVideo}
             preload="auto"
-            key={`video-${currentMediaIndex}`}
+            key={`video-${currentMediaIndex}-${currentMedia.filename}`}
             style={{
               width: '100%',
               height: '100%',

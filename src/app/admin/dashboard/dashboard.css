@@ -713,3 +713,371 @@ video.preview-player {
 img.video-thumbnail {
   filter: contrast(1.05) saturate(1.1) sharpen(1);
 }
+
+/* Orientation Modes */
+.dashboard-container.vertical {
+  width: 1080px !important;
+  min-width: 1080px !important;
+  max-width: 1080px !important;
+  height: 1920px !important;
+  min-height: 1920px !important;
+  max-height: 1920px !important;
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.dashboard-container.vertical .dashboard-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 40px;
+}
+
+.dashboard-container.horizontal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  height: auto;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.dashboard-container.horizontal * {
+  box-sizing: border-box;
+}
+
+.dashboard-container.horizontal .header-content {
+  max-width: 100%;
+  width: 100%;
+}
+
+.dashboard-container.horizontal .dashboard-content {
+  max-width: 100%;
+  width: 100%;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+.dashboard-container.horizontal .video-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Custom Scrollbar for Horizontal Mode */
+.dashboard-container.horizontal::-webkit-scrollbar {
+  width: 12px;
+}
+
+.dashboard-container.horizontal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.dashboard-container.horizontal::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-container.horizontal::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Header Actions */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.orientation-button {
+  background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+.orientation-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+}
+
+/* Logs and Users Buttons */
+.logs-button {
+  background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(159, 122, 234, 0.3);
+}
+
+.logs-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(159, 122, 234, 0.4);
+}
+
+.users-button {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+}
+
+.users-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+/* Responsive adjustments for horizontal mode */
+@media (max-width: 1400px) {
+  .dashboard-container.horizontal .header-content {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+  
+  .dashboard-container.horizontal .dashboard-content {
+    max-width: 100%;
+    padding: 30px 40px;
+  }
+  
+  .dashboard-container.horizontal .video-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container.horizontal .header-content {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .dashboard-container.horizontal .dashboard-content {
+    max-width: 100%;
+    padding: 25px 30px;
+  }
+  
+  .dashboard-container.horizontal .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard-container.horizontal .dashboard-header {
+    padding: 20px 30px;
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 900px) {
+  .dashboard-container.horizontal .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard-container.horizontal .header-content {
+    max-width: 100%;
+  }
+}
+
+/* Mobile Responsive - Only for Horizontal Mode */
+@media (max-width: 767px) {
+  .dashboard-container.horizontal {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+  
+  .dashboard-container.horizontal .header-content {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .dashboard-container.horizontal .header-left {
+    width: 100%;
+  }
+
+  .dashboard-container.horizontal .header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .dashboard-container.horizontal .orientation-button,
+  .dashboard-container.horizontal .logs-button,
+  .dashboard-container.horizontal .users-button,
+  .dashboard-container.horizontal .logout-button {
+    font-size: 12px;
+    padding: 10px 14px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .dashboard-container.horizontal .dashboard-header {
+    padding: 16px;
+  }
+  
+  .dashboard-container.horizontal .dashboard-header h1 {
+    font-size: 20px;
+  }
+  
+  .dashboard-container.horizontal .header-subtitle {
+    font-size: 11px;
+  }
+  
+  .dashboard-container.horizontal .dashboard-content {
+    max-width: 100%;
+    padding: 16px;
+    padding-bottom: 40px;
+  }
+
+  .dashboard-container.horizontal .dashboard-section {
+    padding: 16px;
+    max-width: 100%;
+  }
+  
+  .dashboard-container.horizontal .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .dashboard-container.horizontal .section-header h2 {
+    font-size: 18px;
+  }
+
+  .dashboard-container.horizontal .video-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .dashboard-container.horizontal .video-preview-container {
+    max-height: 400px;
+  }
+  
+  .dashboard-container.horizontal .upload-requirements {
+    padding: 16px;
+  }
+  
+  .dashboard-container.horizontal .upload-requirements h3 {
+    font-size: 14px;
+  }
+  
+  .dashboard-container.horizontal .upload-requirements li {
+    font-size: 12px;
+  }
+  
+  .dashboard-container.horizontal .file-label {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 14px;
+    align-self: stretch;
+  }
+  
+  .dashboard-container.horizontal .upload-button {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 14px;
+    align-self: stretch;
+  }
+  
+  .dashboard-container.horizontal .modal-content {
+    padding: 24px;
+    width: 95%;
+    max-width: 95%;
+  }
+  
+  .dashboard-container.horizontal .modal-content h3 {
+    font-size: 20px;
+  }
+  
+  .dashboard-container.horizontal .modal-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .dashboard-container.horizontal .modal-actions button {
+    width: 100%;
+  }
+}
+
+/* Small Mobile - Horizontal Mode Only */
+@media (max-width: 480px) {
+  .dashboard-container.horizontal .dashboard-header h1 {
+    font-size: 18px;
+  }
+  
+  .dashboard-container.horizontal .user-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  
+  .dashboard-container.horizontal .header-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-container.horizontal .orientation-button,
+  .dashboard-container.horizontal .logs-button,
+  .dashboard-container.horizontal .users-button,
+  .dashboard-container.horizontal .logout-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .dashboard-container.horizontal .dashboard-content {
+    padding: 12px;
+  }
+  
+  .dashboard-container.horizontal .dashboard-section {
+    padding: 12px;
+  }
+}
+
+/* Vertical Mode - Fixed Size, No Responsive Changes */
+/* Vertical mode maintains fixed 1080×1920 dimensions regardless of device */

@@ -14,6 +14,25 @@ export function middleware(request: NextRequest) {
     if (!session && request.nextUrl.pathname !== '/admin/login') {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
+
+    // Role-based access control for admin-only routes
+    if (session && request.nextUrl.pathname !== '/admin/login') {
+      try {
+        const sessionData = JSON.parse(session.value);
+        const adminOnlyRoutes = ['/admin/users', '/admin/activity-logs'];
+        
+        // Check if accessing admin-only route
+        if (adminOnlyRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
+          if (sessionData.role !== 'admin') {
+            // Non-admin users trying to access admin routes - redirect to dashboard
+            return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+          }
+        }
+      } catch (error) {
+        // Invalid session - redirect to login
+        return NextResponse.redirect(new URL('/admin/login', request.url));
+      }
+    }
   }
 
   return NextResponse.next();

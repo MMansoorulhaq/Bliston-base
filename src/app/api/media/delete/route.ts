@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { unlink } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
+import { logActivity } from '@/lib/activityLog';
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -10,6 +11,8 @@ export async function DELETE(request: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const sessionData = JSON.parse(session.value);
 
     const { searchParams } = new URL(request.url);
     const filename = searchParams.get('filename');
@@ -33,13 +36,19 @@ export async function DELETE(request: NextRequest) {
     // Delete the file
     await unlink(filePath);
 
-    // Delete metadata file if it's an image
-    if (filename.startsWith('image-')) {
-      const metadataPath = path.join(uploadsDir, filename.replace(/\.(jpg|png|webp)$/, '.json'));
-      if (existsSync(metadataPath)) {
-        await unlink(metadataPath);
-      }
+    // Delete metadata file if exists
+    const metadataPath = path.join(uploadsDir, filename.replace(/\.(mp4|jpg|png|webp)$/, '.json'));
+    if (existsSync(metadataPath)) {
+      await unlink(metadataPath);
     }
+
+    // Log the deletion
+    await logActivity(
+      sessionData.userId,
+      sessionData.username,
+      'DELETE_MEDIA',
+      `Deleted file: ${filename}`
+    );
 
     return NextResponse.json({
       success: true,

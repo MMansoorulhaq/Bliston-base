@@ -15,6 +15,12 @@ interface MediaItem {
   originalName?: string;
 }
 
+interface UserSession {
+  userId: string;
+  username: string;
+  role: 'admin' | 'user';
+}
+
 const MAX_ITEMS = 4;
 
 export default function DashboardPage() {
@@ -29,21 +35,72 @@ export default function DashboardPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [reordering, setReordering] = useState(false);
+  const [userSession, setUserSession] = useState<UserSession | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  // Initial load
   useEffect(() => {
     fetchMedia();
+    fetchUserSession();
   }, []);
+
+  // Auto-refresh: Poll for updates every 5 seconds
+  useEffect(() => {
+    console.log('🔄 Admin dashboard auto-refresh started (checking every 5 seconds)');
+    
+    const interval = setInterval(async () => {
+      console.log('🔍 Admin: Checking for media updates...');
+      await fetchMedia();
+    }, 5000); // Check every 5 seconds
+
+    return () => {
+      console.log('🛑 Admin dashboard auto-refresh stopped');
+      clearInterval(interval);
+    };
+  }, []);
+
+  const fetchUserSession = async () => {
+    try {
+      const response = await fetch('/api/auth/session');
+      if (response.ok) {
+        const data = await response.json();
+        setUserSession(data.user);
+      }
+    } catch (err) {
+      console.error('Failed to fetch session:', err);
+    }
+  };
 
   const fetchMedia = async () => {
     try {
-      const response = await fetch('/api/media/info');
-      const data = await response.json();
-      setMedia(data.media || []);
+      console.log('📡 Admin: Fetching media from /api/media/info...');
+      const response = await fetch('/api/media/info', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const newMediaCount = data.media?.length || 0;
+        const currentMediaCount = media.length;
+        
+        console.log('✅ Admin: Fetched', newMediaCount, 'media items');
+        
+        if (newMediaCount !== currentMediaCount) {
+          console.log('🔄 Admin: Media count changed from', currentMediaCount, 'to', newMediaCount);
+        }
+        
+        setMedia(data.media || []);
+        setLastUpdate(Date.now());
+      } else {
+        console.error('❌ Admin: Failed to fetch media, status:', response.status);
+      }
     } catch (err) {
-      console.error('Failed to fetch media:', err);
+      console.error('❌ Admin: Failed to fetch media:', err);
     }
   };
 
@@ -156,12 +213,18 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('✅ Upload successful, refreshing media list...');
         setSuccess(`${fileType === 'video' ? 'Video' : 'Image'} uploaded successfully!`);
         setSelectedFile(null);
         setPreviewUrl(null);
         setImageDuration(10);
         if (fileInputRef.current) fileInputRef.current.value = '';
-        fetchMedia();
+        
+        // Force immediate refresh
+        await fetchMedia();
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data.error || 'Upload failed');
       }
@@ -180,9 +243,15 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('✅ Delete successful, refreshing media list...');
         setSuccess('Item deleted successfully');
         setDeleteConfirm(null);
-        fetchMedia();
+        
+        // Force immediate refresh
+        await fetchMedia();
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data.error || 'Delete failed');
       }
@@ -207,7 +276,6 @@ export default function DashboardPage() {
       return;
     }
 
-    setReordering(true);
     const newMedia = [...media];
     const draggedItem = newMedia[draggedIndex];
     
@@ -229,17 +297,16 @@ export default function DashboardPage() {
       });
 
       if (response.ok) {
+        console.log('✅ Reorder successful');
         setSuccess('Media order updated successfully!');
         setTimeout(() => setSuccess(''), 3000);
       } else {
         setError('Failed to save new order');
-        fetchMedia(); // Revert to original order
+        await fetchMedia(); // Revert to original order
       }
     } catch (err) {
       setError('Failed to save new order');
-      fetchMedia(); // Revert to original order
-    } finally {
-      setReordering(false);
+      await fetchMedia(); // Revert to original order
     }
   };
 
@@ -249,18 +316,49 @@ export default function DashboardPage() {
   };
 
   const canUploadMore = media.length < MAX_ITEMS;
+  const isAdmin = userSession?.role === 'admin';
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container vertical">
       <header className="dashboard-header">
         <div className="header-content">
-          <div>
-            <h1>Media Management Dashboard</h1>
-            <p className="header-subtitle">Manage your media playlist ({media.length}/{MAX_ITEMS} items - Videos & Images)</p>
+          <div className="header-left">
+            <div>
+              <h1>Media Management Dashboard</h1>
+              <p className="header-subtitle">
+                {userSession && (
+                  <span className="user-badge">
+                    {userSession.role === 'admin' ? '👑' : '👤'} {userSession.username} ({userSession.role})
+                  </span>
+                )}
+                {' • '}
+                {media.length}/{MAX_ITEMS} items
+              </p>
+            </div>
           </div>
-          <button onClick={handleLogout} className="logout-button">
-            <span>🚪</span> Logout
-          </button>
+          <div className="header-actions">
+            {isAdmin && (
+              <>
+                <button 
+                  onClick={() => router.push('/admin/activity-logs')} 
+                  className="logs-button"
+                  title="View Activity Logs"
+                >
+                  📋 Logs
+                </button>
+                <button 
+                  onClick={() => router.push('/admin/users')} 
+                  className="users-button"
+                  title="User Management"
+                >
+                  👥 Users
+                </button>
+              </>
+            )}
+            <button onClick={handleLogout} className="logout-button">
+              <span>🚪</span> Logout
+            </button>
+          </div>
         </div>
       </header>
 
