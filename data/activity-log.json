@@ -1,0 +1,130 @@
+[
+  {
+    "id": "1765870438188-vlnye13x0",
+    "userId": "1",
+    "username": "marketing",
+    "action": "LOGOUT",
+    "details": "User logged out",
+    "timestamp": "2025-12-16T07:33:58.188Z"
+  },
+  {
+    "id": "1765869633770-f3mam2kwu",
+    "userId": "5",
+    "username": "bilal",
+    "action": "LOGIN",
+    "details": "User logged in successfully",
+    "timestamp": "2025-12-16T07:20:33.770Z"
+  },
+  {
+    "id": "1765869623015-86lo0o23v",
+    "userId": "5",
+    "username": "bilal",
+    "action": "LOGOUT",
+    "details": "User logged out",
+    "timestamp": "2025-12-16T07:20:23.015Z"
+  },
+  {
+    "id": "1765869565697-im4l3kjma",
+    "userId": "5",
+    "username": "bilal",
+    "action": "LOGIN",
+    "details": "User logged in successfully",
+    "timestamp": "2025-12-16T07:19:25.697Z"
+  },
+  {
+    "id": "1765869542752-i9s941z05",
+    "userId": "1",
+    "username": "marketing",
+    "action": "UPDATE_USER",
+    "details": "Updated user 5: username, password",
+    "timestamp": "2025-12-16T07:19:02.752Z"
+  },
+  {
+    "id": "1765868975342-rbolxb1jd",
+    "userId": "1",
+    "username": "marketing",
+    "action": "UPLOAD_MEDIA",
+    "details": "Uploaded video: video-1765868975292.mp4",
+    "timestamp": "2025-12-16T07:09:35.342Z"
+  },
+  {
+    "id": "1765868966914-ap1ydf12n",
+    "userId": "1",
+    "username": "marketing",
+    "action": "DELETE_MEDIA",
+    "details": "Deleted file: video-1765865364141.mp4",
+    "timestamp": "2025-12-16T07:09:26.914Z"
+  },
+  {
+    "id": "1765865375764-8bt7xvuth",
+    "userId": "1",
+    "username": "marketing",
+    "action": "UPLOAD_MEDIA",
+    "details": "Uploaded video: video-1765865375717.mp4",
+    "timestamp": "2025-12-16T06:09:35.764Z"
+  },
+  {
+    "id": "1765865364197-8y7q2isqv",
+    "userId": "1",
+    "username": "marketing",
+    "action": "UPLOAD_MEDIA",
+    "details": "Uploaded video: video-1765865364141.mp4",
+    "timestamp": "2025-12-16T06:09:24.197Z"
+  },
+  {
+    "id": "1765865353962-h5d2m550k",
+    "userId": "1",
+    "username": "marketing",
+    "action": "DELETE_MEDIA",
+    "details": "Deleted file: video-1765865289200.mp4",
+    "timestamp": "2025-12-16T06:09:13.962Z"
+  },
+  {
+    "id": "1765865350694-raoekcw5u",
+    "userId": "1",
+    "username": "marketing",
+    "action": "DELETE_MEDIA",
+    "details": "Deleted file: video-1765356947770.mp4",
+    "timestamp": "2025-12-16T06:09:10.694Z"
+  },
+  {
+    "id": "1765865289262-qz9ktktfe",
+    "userId": "1",
+    "username": "marketing",
+    "action": "UPLOAD_MEDIA",
+    "details": "Uploaded video: video-1765865289200.mp4",
+    "timestamp": "2025-12-16T06:08:09.262Z"
+  },
+  {
+    "id": "1765865269936-mkd7kata3",
+    "userId": "1",
+    "username": "marketing",
+    "action": "DELETE_MEDIA",
+    "details": "Deleted file: image-1765789330742.jpg",
+    "timestamp": "2025-12-16T06:07:49.936Z"
+  },
+  {
+    "id": "1765865258347-8ud2zlewc",
+    "userId": "1",
+    "username": "marketing",
+    "action": "DELETE_MEDIA",
+    "details": "Deleted file: image-1765356962719.jpg",
+    "timestamp": "2025-12-16T06:07:38.346Z"
+  },
+  {
+    "id": "1765865106703-q3n3mzoqs",
+    "userId": "1",
+    "username": "marketing",
+    "action": "LOGIN",
+    "details": "User logged in successfully",
+    "timestamp": "2025-12-16T06:05:06.703Z"
+  },
+  {
+    "id": "1765803740659",
+    "userId": "1",
+    "username": "marketing",
+    "action": "LOGIN",
+    "details": "User logged in successfully",
+    "timestamp": "2025-12-15T13:02:20.659Z"
+  }
+]
